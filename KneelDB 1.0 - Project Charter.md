@@ -18,7 +18,14 @@ Additionally, Kneel DB is a way for me to learn.  I may change the database's ar
 * Speed, concurrency, relationships are not a priority at this time
 
 ## Possible Future Improvements
+### Big Picture
 * Proper SQL language parser
 * Support data-types
 * Try programming in different sorting algorithms, both for learning and for fun
 * Provide an administrator
+
+### Table
+* Have a list of columns
+  * If user inserts a record without one of the columns, add it automatically to the record
+  * If the user inserts a record with a new column, add it to the old records
+  * Note - doing this for every insert / update would be computationally expensive, and the cost would grow with every insert.  Would need to either only do it on SELECT, have a background process, or find a way to do it cheaply.
