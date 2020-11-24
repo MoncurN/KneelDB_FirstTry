@@ -1,7 +1,11 @@
+using System.Text.Json;
+
 namespace KneelDB {
     public class Parser {
         public Table GetTable() {
             var table = GetTable("Default", "Default");
+
+            return table;
         }
 
         public Table GetTable(string tableName) {
@@ -10,7 +14,7 @@ namespace KneelDB {
             return table;
         }
 
-        public Table GetTable(string tableName, string datbaseName) {
+        public Table GetTable(string tableName, string databaseName) {
             var storage = new Storage();
             
             Table table;
