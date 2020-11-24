@@ -25,6 +25,8 @@ namespace KneelDB
             DatabaseName = databaseName;
         }
 
+
+
         public int InsertWithSerialization<T>(T values) 
         {
             var json = JsonConvert.SerializeObject(values);
@@ -42,16 +44,16 @@ namespace KneelDB
 
         public int Insert<T>(T values) 
         {
-            var t = typeof(T);
+            var props = values.GetType().GetProperties();
 
-            foreach (var prop in t.GetProperties()) {
+            foreach (var prop in props) {
                 Console.WriteLine(prop.Name + ":" + prop.GetValue(values));
             }
 
             return 1;
         }
 
-        public int Insert(Dictionary<string, string> values) 
+        public int InsertWithDictionary(Dictionary<string, string> values) 
         {
             Storage storage = new Storage();
 
