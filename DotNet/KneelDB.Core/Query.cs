@@ -27,7 +27,31 @@ namespace KneelDB
 
         public int Insert<T>(T values) 
         {
-            var props = values.GetType().GetProperties();
+            var type = values.GetType();
+            var props = type.GetProperties();
+            
+            Dictionary<string,dynamic> record = new Dictionary<string,dynamic>();
+            foreach (var prop in props) 
+            {
+                if (prop.PropertyType == typeof(String) || 
+                    prop.PropertyType == typeof(DateTime) || 
+                    prop.PropertyType == typeof(Int16) ||
+                    prop.PropertyType == typeof(Int32) || 
+                    prop.PropertyType == typeof(Int64) || 
+                    prop.PropertyType == typeof(Decimal) || 
+                    prop.PropertyType == typeof(Double) || 
+                    prop.PropertyType == typeof(float)) 
+                    {
+                        record.Add(prop.Name, prop.GetValue(values));
+                    }
+            }
+
+            var storage = new Storage();
+            
+            var parser = new Parser();
+            var table = parser.GetTable();
+
+            table.Insert(record);
             
             foreach (var prop in props) {
                 Console.WriteLine(prop.Name + ":" + prop.GetValue(values));
