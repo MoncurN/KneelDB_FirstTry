@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\KneelDB\KneelDB.csproj" />
+    <ProjectReference Include="..\KneelDB.Core\KneelDB.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

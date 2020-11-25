@@ -25,41 +25,15 @@ namespace KneelDB
             DatabaseName = databaseName;
         }
 
-
-
-        public int InsertWithSerialization<T>(T values) 
-        {
-            var json = JsonConvert.SerializeObject(values);
-
-            var dictionary = JsonConvert.DeserializeObject<Dictionary<string,string>>(json);
-
-            var jsonAgain = JsonConvert.SerializeObject(dictionary);
-
-            Console.WriteLine(jsonAgain);
-
-            T final = JsonConvert.DeserializeObject<T>(jsonAgain);
-
-            return 1;
-        }
-
         public int Insert<T>(T values) 
         {
             var props = values.GetType().GetProperties();
-
+            
             foreach (var prop in props) {
                 Console.WriteLine(prop.Name + ":" + prop.GetValue(values));
             }
 
             return 1;
-        }
-
-        public int InsertWithDictionary(Dictionary<string, string> values) 
-        {
-            Storage storage = new Storage();
-
-            var table = storage.Read(TableName, DatabaseName);
-
-            throw new NotImplementedException();
         }
     }
 }
