@@ -48,16 +48,17 @@ namespace KneelDB
 
             var storage = new Storage();
             
-            var parser = new Parser();
-            var table = parser.GetTable();
-
-            table.Insert(record);
+            var table = storage.GetTable();
             
-            foreach (var prop in props) {
-                Console.WriteLine(prop.Name + ":" + prop.GetValue(values));
-            }
+            var newId = table.Insert(record);
+            
+            storage.SaveTable(table);
 
-            return 1;
+            return newId;
+
+            // foreach (var prop in props) {
+            //     Console.WriteLine(prop.Name + ":" + prop.GetValue(values));
+            // }
         }
     }
 }

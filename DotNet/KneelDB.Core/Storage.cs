@@ -1,33 +1,56 @@
+using System;
 using System.IO;
+using System.Text.Json;
 
 namespace KneelDB 
 {
     public class Storage 
     {
-        public string Read() 
-        {
-            var json = Read("Default", "Default");
+        public Table GetTable(string tableName = "Blah", string databaseName = "Blah") {
+            Table table;
 
-            return json;
+            var json = Read(tableName, databaseName);
+
+            if (json == "") {
+                table = new Table();
+            }
+            else 
+            {
+                table = JsonSerializer.Deserialize<Table>(json);
+            }
+
+            return table;
         }
 
-        public string Read(string tableName) 
+        public void SaveTable(Table table, string tableName="Blah", string databaseName="Blah") 
         {
-            var json = Read(tableName, "Default");
+            var json = JsonSerializer.Serialize(table);
 
-            return json;
+            Write(json, tableName, databaseName);
         }
 
-        public string Read(string tableName, string databaseName) 
+        private string Read(string tableName, string databaseName) 
         {
             string json = "";
-            var path = @".\" + databaseName + @"\" + tableName + ".json";
+            var path = @".\" + databaseName ;
+            var fullPath = path + @"\" + tableName + ".json";
 
-            if (File.Exists(path)) {
-                json = File.ReadAllText(path);
+            if (File.Exists(fullPath)) {
+                json = File.ReadAllText(fullPath);
             }
 
             return json;
+        }
+
+        private void Write(string json, string tableName, string databaseName) {
+            var path = @".\" + databaseName ;
+            var fullPath = path + @"\" + tableName + ".json";
+
+            if (!Directory.Exists(fullPath)) {
+                Directory.CreateDirectory(path);
+            }
+
+            File.WriteAllText(fullPath, json);
         }
     }
 }
