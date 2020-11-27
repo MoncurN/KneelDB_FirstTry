@@ -1,4 +1,4 @@
- namespace KneelDB 
+ namespace KneelDB.Core
  {
      public class Transformer 
      {

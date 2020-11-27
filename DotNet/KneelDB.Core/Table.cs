@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace KneelDB 
+namespace KneelDB.Core
 {
     public class Table {
         public Table () {

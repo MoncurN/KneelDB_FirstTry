@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text.Json;
 using Newtonsoft.Json;
 
-namespace KneelDB
+namespace KneelDB.Core
 {
     public class Query {
         public string TableName { get; set; }

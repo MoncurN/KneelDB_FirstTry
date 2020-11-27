@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace KneelDB {
+namespace KneelDB.Core {
     public class Parser {
         
     }

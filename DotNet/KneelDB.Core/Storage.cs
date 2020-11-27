@@ -2,11 +2,14 @@ using System;
 using System.IO;
 using System.Text.Json;
 
-namespace KneelDB 
+namespace KneelDB.Core
 {
     public class Storage 
     {
-        public Table GetTable(string tableName = "Blah", string databaseName = "Blah") {
+        public const string DefaultTableName = "Default";
+        public const string DefaultDatabaseName = "Default";
+
+        public Table GetTable(string tableName=DefaultTableName, string databaseName=DefaultDatabaseName) {
             Table table;
 
             var json = Read(tableName, databaseName);
@@ -22,7 +25,7 @@ namespace KneelDB
             return table;
         }
 
-        public void SaveTable(Table table, string tableName="Blah", string databaseName="Blah") 
+        public void SaveTable(Table table, string tableName=DefaultTableName, string databaseName=DefaultDatabaseName) 
         {
             var json = JsonSerializer.Serialize(table);
 
@@ -32,8 +35,8 @@ namespace KneelDB
         private string Read(string tableName, string databaseName) 
         {
             string json = "";
-            var path = @".\" + databaseName ;
-            var fullPath = path + @"\" + tableName + ".json";
+            var path = Config.BasePath + "/" + databaseName ;
+            var fullPath = path + "/" + tableName + ".json";
 
             if (File.Exists(fullPath)) {
                 json = File.ReadAllText(fullPath);
@@ -43,8 +46,8 @@ namespace KneelDB
         }
 
         private void Write(string json, string tableName, string databaseName) {
-            var path = @".\" + databaseName ;
-            var fullPath = path + @"\" + tableName + ".json";
+            var path = Config.BasePath + "/" + databaseName ;
+            var fullPath = path + "/" + tableName + ".json";
 
             if (!Directory.Exists(fullPath)) {
                 Directory.CreateDirectory(path);
