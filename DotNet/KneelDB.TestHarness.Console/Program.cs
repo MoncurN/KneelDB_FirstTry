@@ -19,6 +19,16 @@ namespace KneelDB.TestHarness.Console
              };
 
             query.Insert<dynamic>(blah);
+
+            var result = query.Select<TheType>();
+
+            var i = 1;
         }
+    }
+
+    public class TheType
+    {
+        public string foo { get; set; }
+        public DateTime now { get; set; }
     }
 }
