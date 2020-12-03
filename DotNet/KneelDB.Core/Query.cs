@@ -124,11 +124,19 @@ namespace KneelDB.Core
                     // If the record has a key with that name
                     if (record.ContainsKey(tProp.Name)) {
                         // Attempt to cast to the desired property type
-                        switch (propertyType.Name)
+                        switch (propertyType.FullName)
                         {
-                            case "String":
-                                var value = record.GetValueOrDefault(tProp.Name);
-                                tProp.SetValue(result, tProp.Name);
+                            case "System.String":
+                                var value = record.GetValueOrDefault(tProp.Name).ToString();
+                                tProp.SetValue(result, value);
+                                break;
+                            case "System.DateTime":
+                                var v = record.GetValueOrDefault(tProp.Name).ToString();
+                                DateTime parsed;
+                                if (DateTime.TryParse(v, out parsed))
+                                {
+                                    tProp.SetValue(result, parsed);
+                                }
                                 break;
                         }
                     }
