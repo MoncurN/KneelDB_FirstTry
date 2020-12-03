@@ -109,10 +109,10 @@ namespace KneelDB.Core
 
             var results = new List<T>();
 
-            // For each record in the database, attempt to copy values into an object of type T
+            // For each record in the database
             foreach (var record in table.Records)
             {
-                // Create the new object of type T
+                // Create a new object of type T
                 var result = new T();
 
                 // For each property in type T
@@ -123,11 +123,12 @@ namespace KneelDB.Core
 
                     // If the record has a key with that name
                     if (record.ContainsKey(tProp.Name)) {
-                        // Switch to the correct Property Type, and attempt to cast to that type
+                        // Attempt to cast to the desired property type
                         switch (propertyType.Name)
                         {
                             case "String":
-                                
+                                var value = record.GetValueOrDefault(tProp.Name);
+                                tProp.SetValue(result, tProp.Name);
                                 break;
                         }
                     }
@@ -135,20 +136,20 @@ namespace KneelDB.Core
 
 
 
-                    switch (propertyType.Name)
-                    {
-                        case "String":
-                            var parsed = record.GetValueOrDefault(result)
-                            break;
-                        default:
-                            throw new Exception()
-                            break;
-                    }
-                    var resultProperty = result.GetType().GetProperty(tProp.Name);
-                    if (resultProperty != null) 
-                    {
-                        resultProperty.SetValue(result, record.GetValueOrDefault(resultProperty.Name));
-                    }
+                    // switch (propertyType.Name)
+                    // {
+                    //     case "String":
+                    //         var parsed = record.GetValueOrDefault(result)
+                    //         break;
+                    //     default:
+                    //         throw new Exception()
+                    //         break;
+                    // }
+                    // var resultProperty = result.GetType().GetProperty(tProp.Name);
+                    // if (resultProperty != null) 
+                    // {
+                    //     resultProperty.SetValue(result, record.GetValueOrDefault(resultProperty.Name));
+                    // }
                 }
 
                 results.Add(result);
