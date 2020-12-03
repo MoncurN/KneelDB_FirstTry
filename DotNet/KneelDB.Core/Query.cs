@@ -30,43 +30,43 @@ namespace KneelDB.Core
             var type = values.GetType();
             var props = type.GetProperties();
             
-            Dictionary<string,Value> record = new Dictionary<string,Value>();
-            foreach (var prop in props) 
-            {
-                var propertyType = prop.PropertyType.ToString();
-                ValueType valueType;
-                switch (propertyType)
-                {
-                    case "DateTime":
-                        valueType = ValueType.DateTime;
-                        break;
-                    case "Decimal":
-                        valueType = ValueType.Decimal;
-                        break;
-                    case "Double":
-                        valueType = ValueType.Double;
-                        break;
-                    case "Int16":
-                        valueType = ValueType.Int16;
-                        break;
-                    case "Int32":
-                        valueType = ValueType.Int16;
-                        break;
-                    case "Int64":
-                        valueType = ValueType.Int16;
-                        break;
-                    case "String":
-                        valueType = ValueType.String;
-                        break;
-                    default:
-                        throw new Exception($"Type {prop.PropertyType.ToString()} not accepted.");
-                }
-                var value = new Value(valueType, prop.GetValue(values)); 
-                record.Add(prop.Name, value);
-            }
+            // Dictionary<string,Value> record = new Dictionary<string,Value>();
+            // foreach (var prop in props) 
+            // {
+            //     var propertyType = prop.PropertyType.ToString();
+            //     ValueType valueType;
+            //     switch (propertyType)
+            //     {
+            //         case "DateTime":
+            //             valueType = ValueType.DateTime;
+            //             break;
+            //         case "Decimal":
+            //             valueType = ValueType.Decimal;
+            //             break;
+            //         case "Double":
+            //             valueType = ValueType.Double;
+            //             break;
+            //         case "Int16":
+            //             valueType = ValueType.Int16;
+            //             break;
+            //         case "Int32":
+            //             valueType = ValueType.Int16;
+            //             break;
+            //         case "Int64":
+            //             valueType = ValueType.Int16;
+            //             break;
+            //         case "String":
+            //             valueType = ValueType.String;
+            //             break;
+            //         default:
+            //             throw new Exception($"Type {prop.PropertyType.ToString()} not accepted.");
+            //     }
+            //     var value = new Value(valueType, prop.GetValue(values)); 
+            //     record.Add(prop.Name, value);
+            // }
 
-
-            Dictionary<string,dynamic> record2 = new Dictionary<string,dynamic>();
+            
+            Dictionary<string,dynamic> record = new Dictionary<string,dynamic>();
             foreach (var prop in props) 
             {
                 if (prop.PropertyType == typeof(String) || 
@@ -78,7 +78,7 @@ namespace KneelDB.Core
                     prop.PropertyType == typeof(Double) || 
                     prop.PropertyType == typeof(float)) 
                     {
-                        record2.Add(prop.Name, prop.GetValue(values));
+                        record.Add(prop.Name, prop.GetValue(values));
                     }
             }
 
@@ -86,7 +86,7 @@ namespace KneelDB.Core
             
             var table = storage.GetTable();
             
-            var newId = table.Insert(record2);
+            var newId = table.Insert(record);
             
             storage.SaveTable(table);
 
@@ -109,12 +109,41 @@ namespace KneelDB.Core
 
             var results = new List<T>();
 
+            // For each record in the database, attempt to copy values into an object of type T
             foreach (var record in table.Records)
             {
+                // Create the new object of type T
                 var result = new T();
 
+                // For each property in type T
                 foreach (var tProp in tProps)
                 {
+                    // Grab the property type
+                    var propertyType = tProp.PropertyType;
+
+                    // If the record has a key with that name
+                    if (record.ContainsKey(tProp.Name)) {
+                        // Switch to the correct Property Type, and attempt to cast to that type
+                        switch (propertyType.Name)
+                        {
+                            case "String":
+                                
+                                break;
+                        }
+                    }
+
+
+
+
+                    switch (propertyType.Name)
+                    {
+                        case "String":
+                            var parsed = record.GetValueOrDefault(result)
+                            break;
+                        default:
+                            throw new Exception()
+                            break;
+                    }
                     var resultProperty = result.GetType().GetProperty(tProp.Name);
                     if (resultProperty != null) 
                     {
