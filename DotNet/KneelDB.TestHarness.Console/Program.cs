@@ -18,16 +18,16 @@ namespace KneelDB.TestHarness.Console
                 age = 42
              };
 
-            // query.Insert<dynamic>(blah);
+            query.Insert<dynamic>(blah);
 
-            var result = query.Select<TheType>();
+            // var result = query.Select<TheType>();
 
-            var changed = new {
-                Id = 3, 
-                foo = "Now I'm something else"
-            };
+            // var changed = new {
+            //     Id = 3, 
+            //     foo = "Now I'm something else"
+            // };
 
-            query.Update<dynamic>(changed);
+            // query.Update<dynamic>(changed);
 
             var i = 1;
         }
