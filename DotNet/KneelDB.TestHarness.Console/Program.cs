@@ -11,16 +11,23 @@ namespace KneelDB.TestHarness.Console
         {
             Query query = new Query();
 
-            // var blah = new { 
-            //     foo = "bar", 
-            //     now = System.DateTime.Now, 
-            //     cash = 25.4M, 
-            //     age = 42
-            //  };
+            var blah = new { 
+                foo = "bar", 
+                now = System.DateTime.Now, 
+                cash = 25.4M, 
+                age = 42
+             };
 
             // query.Insert<dynamic>(blah);
 
             var result = query.Select<TheType>();
+
+            var changed = new {
+                Id = 3, 
+                foo = "Now I'm something else"
+            };
+
+            query.Update<dynamic>(changed);
 
             var i = 1;
         }

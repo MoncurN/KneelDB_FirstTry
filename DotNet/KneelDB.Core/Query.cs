@@ -162,47 +162,34 @@ namespace KneelDB.Core
             return results;
         }
 
-        public void Update<T>(T values) 
+        public void Update<T>(T values) where T : new() 
         {
-            // Get the Id
-            int id = default(int);
-            var idProperty = values.GetType().GetProperty("Id");
-            if (idProperty == null || idProperty.PropertyType != typeof(Int32)) {
-                throw new Exception("No Id property specified");
-            }
+            var idProp = values.GetType().GetProperty("Id");
+            var id = idProp.GetValue(values);
 
-            var storage = new Storage();
-            var table = storage.GetTable();
+            //var id = values.GetValueOrDefault(idProp.Name).ToString();
+            //var id = values.GetType().GetProperty("Id").GetValue(T);
+            //Console.WriteLine(id);
+            
+            // Get the Id
+            // int id = default(int);
+            // var valuesType = values.GetType();
+            // var idProperty = valuesType.GetProperty("Id");
+            // if (idProperty == null || idProperty.PropertyType != typeof(Int32)) {
+            //     throw new Exception("No Id property specified");
+            // }
+
+            // id = values.GetValueOrDefault("Id");
+
+            //var table = Select<T>();
+             
             
             // Make sure the Id is found within the table
             // If not, it's not an error, just return to caller
-            var record2 = table.Records.FirstOrDefault<int>(r => (int)r.GetValue("Id") == id);
-
-            var type = values.GetType();
-            var props = type.GetProperties();
-            
-            Dictionary<string,dynamic> record = new Dictionary<string,dynamic>();
-            foreach (var prop in props) 
-            {
-                if (prop.PropertyType == typeof(String) || 
-                    prop.PropertyType == typeof(DateTime) || 
-                    prop.PropertyType == typeof(Int16) ||
-                    prop.PropertyType == typeof(Int32) || 
-                    prop.PropertyType == typeof(Int64) || 
-                    prop.PropertyType == typeof(Decimal) || 
-                    prop.PropertyType == typeof(Double) || 
-                    prop.PropertyType == typeof(Single)) 
-                    {
-                        record.Add(prop.Name, prop.GetValue(values));
-                    }
-            }
-
-            
-            var newId = table.Insert(record);
-            
-            storage.SaveTable(table);
-
-            return newId;
+            //var record = table.Records.FirstOrDefault(r => true);
+            // var blah = record["Id"];
+            // var thing = blah.Get
+            var i = 1;
         }
     }
 }
