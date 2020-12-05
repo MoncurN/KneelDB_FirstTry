@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using Newtonsoft.Json;
@@ -30,42 +31,6 @@ namespace KneelDB.Core
             var type = values.GetType();
             var props = type.GetProperties();
             
-            // Dictionary<string,Value> record = new Dictionary<string,Value>();
-            // foreach (var prop in props) 
-            // {
-            //     var propertyType = prop.PropertyType.ToString();
-            //     ValueType valueType;
-            //     switch (propertyType)
-            //     {
-            //         case "DateTime":
-            //             valueType = ValueType.DateTime;
-            //             break;
-            //         case "Decimal":
-            //             valueType = ValueType.Decimal;
-            //             break;
-            //         case "Double":
-            //             valueType = ValueType.Double;
-            //             break;
-            //         case "Int16":
-            //             valueType = ValueType.Int16;
-            //             break;
-            //         case "Int32":
-            //             valueType = ValueType.Int16;
-            //             break;
-            //         case "Int64":
-            //             valueType = ValueType.Int16;
-            //             break;
-            //         case "String":
-            //             valueType = ValueType.String;
-            //             break;
-            //         default:
-            //             throw new Exception($"Type {prop.PropertyType.ToString()} not accepted.");
-            //     }
-            //     var value = new Value(valueType, prop.GetValue(values)); 
-            //     record.Add(prop.Name, value);
-            // }
-
-            
             Dictionary<string,dynamic> record = new Dictionary<string,dynamic>();
             foreach (var prop in props) 
             {
@@ -76,7 +41,7 @@ namespace KneelDB.Core
                     prop.PropertyType == typeof(Int64) || 
                     prop.PropertyType == typeof(Decimal) || 
                     prop.PropertyType == typeof(Double) || 
-                    prop.PropertyType == typeof(float)) 
+                    prop.PropertyType == typeof(Single)) 
                     {
                         record.Add(prop.Name, prop.GetValue(values));
                     }
@@ -126,48 +91,118 @@ namespace KneelDB.Core
                         // Attempt to cast to the desired property type
                         switch (propertyType.FullName)
                         {
-                            case "System.String":
-                                var value = record.GetValueOrDefault(tProp.Name).ToString();
-                                tProp.SetValue(result, value);
-                                break;
                             case "System.DateTime":
-                                var v = record.GetValueOrDefault(tProp.Name).ToString();
-                                DateTime parsed;
-                                if (DateTime.TryParse(v, out parsed))
+                                var dateTimeValue = record.GetValueOrDefault(tProp.Name).ToString();
+                                DateTime dateTimeParsed;
+                                if (DateTime.TryParse(dateTimeValue, out dateTimeParsed))
                                 {
-                                    tProp.SetValue(result, parsed);
+                                    tProp.SetValue(result, dateTimeParsed);
                                 }
                                 break;
+                            case "System.Decimal":
+                                var decimalValue = record.GetValueOrDefault(tProp.Name).ToString();
+                                decimal decimalParsed;
+                                if (Decimal.TryParse(decimalValue, out decimalParsed))
+                                {
+                                    tProp.SetValue(result, decimalParsed);
+                                }
+                                break;
+                            case "System.Double":
+                                var doubleValue = record.GetValueOrDefault(tProp.Name).ToString();
+                                double doubleParsed;
+                                if (Double.TryParse(doubleValue, out doubleParsed))
+                                {
+                                    tProp.SetValue(result, doubleParsed);
+                                }
+                                break;
+                            case "System.Single":
+                                var singleValue = record.GetValueOrDefault(tProp.Name).ToString();
+                                float singleParsed;
+                                if (Single.TryParse(singleValue, out singleParsed))
+                                {
+                                    tProp.SetValue(result, singleParsed);
+                                }
+                                break;
+                            case "System.Int16":
+                                var int16Value = record.GetValueOrDefault(tProp.Name).ToString();
+                                Int16 int16Parsed;
+                                if (Int16.TryParse(int16Value, out int16Parsed))
+                                {
+                                    tProp.SetValue(result, int16Parsed);
+                                }
+                                break;
+                            case "System.Int32":
+                                var int32Value = record.GetValueOrDefault(tProp.Name).ToString();
+                                Int32 int32Parsed;
+                                if (Int32.TryParse(int32Value, out int32Parsed))
+                                {
+                                    tProp.SetValue(result, int32Parsed);
+                                }
+                                break;
+                            case "System.Int64":
+                                var int64Value = record.GetValueOrDefault(tProp.Name).ToString();
+                                Int64 int64Parsed;
+                                if (Int64.TryParse(int64Value, out int64Parsed))
+                                {
+                                    tProp.SetValue(result, int64Parsed);
+                                }
+                                break;
+                            case "System.String":
+                                var stringValue = record.GetValueOrDefault(tProp.Name).ToString();
+                                tProp.SetValue(result, stringValue);
+                                break;
+                            
                         }
                     }
-
-
-
-
-                    // switch (propertyType.Name)
-                    // {
-                    //     case "String":
-                    //         var parsed = record.GetValueOrDefault(result)
-                    //         break;
-                    //     default:
-                    //         throw new Exception()
-                    //         break;
-                    // }
-                    // var resultProperty = result.GetType().GetProperty(tProp.Name);
-                    // if (resultProperty != null) 
-                    // {
-                    //     resultProperty.SetValue(result, record.GetValueOrDefault(resultProperty.Name));
-                    // }
                 }
 
                 results.Add(result);
             }
 
             return results;
+        }
 
-            // foreach (var prop in props) {
-            //     Console.WriteLine(prop.Name + ":" + prop.GetValue(values));
-            // }
+        public void Update<T>(T values) 
+        {
+            // Get the Id
+            int id = default(int);
+            var idProperty = values.GetType().GetProperty("Id");
+            if (idProperty == null || idProperty.PropertyType != typeof(Int32)) {
+                throw new Exception("No Id property specified");
+            }
+
+            var storage = new Storage();
+            var table = storage.GetTable();
+            
+            // Make sure the Id is found within the table
+            // If not, it's not an error, just return to caller
+            var record2 = table.Records.FirstOrDefault<int>(r => (int)r.GetValue("Id") == id);
+
+            var type = values.GetType();
+            var props = type.GetProperties();
+            
+            Dictionary<string,dynamic> record = new Dictionary<string,dynamic>();
+            foreach (var prop in props) 
+            {
+                if (prop.PropertyType == typeof(String) || 
+                    prop.PropertyType == typeof(DateTime) || 
+                    prop.PropertyType == typeof(Int16) ||
+                    prop.PropertyType == typeof(Int32) || 
+                    prop.PropertyType == typeof(Int64) || 
+                    prop.PropertyType == typeof(Decimal) || 
+                    prop.PropertyType == typeof(Double) || 
+                    prop.PropertyType == typeof(Single)) 
+                    {
+                        record.Add(prop.Name, prop.GetValue(values));
+                    }
+            }
+
+            
+            var newId = table.Insert(record);
+            
+            storage.SaveTable(table);
+
+            return newId;
         }
     }
 }

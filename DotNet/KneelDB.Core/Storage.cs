@@ -27,7 +27,9 @@ namespace KneelDB.Core
 
         public void SaveTable(Table table, string tableName=DefaultTableName, string databaseName=DefaultDatabaseName) 
         {
-            var json = JsonSerializer.Serialize(table);
+            var options = new JsonSerializerOptions();
+            options.WriteIndented = true;
+            var json = JsonSerializer.Serialize(table, options);
 
             Write(json, tableName, databaseName);
         }
