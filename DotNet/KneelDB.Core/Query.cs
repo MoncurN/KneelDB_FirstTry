@@ -71,6 +71,12 @@ namespace KneelDB.Core
             {
                 var result = new T();
 
+                foreach (var prop in tProps) {
+                    var propertyType = prop.PropertyType;
+
+                    
+                }
+
 
 
 
