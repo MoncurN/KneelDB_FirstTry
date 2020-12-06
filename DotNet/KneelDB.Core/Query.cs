@@ -26,35 +26,87 @@ namespace KneelDB.Core
             DatabaseName = databaseName;
         }
 
-        public int Insert<T>(T values) 
+        public int Insert(dynamic values)
         {
             var props = values.GetType().GetProperties();
-            
-            Dictionary<string,dynamic> record = new Dictionary<string,dynamic>();
-            foreach (var prop in props) 
+
+            Dictionary<string, Value> record = new Dictionary<string, Value>();
+
+            foreach (var prop in props)
             {
-                if (prop.PropertyType == typeof(String) || 
-                    prop.PropertyType == typeof(DateTime) || 
-                    prop.PropertyType == typeof(Int16) ||
-                    prop.PropertyType == typeof(Int32) || 
-                    prop.PropertyType == typeof(Int64) || 
-                    prop.PropertyType == typeof(Decimal) || 
-                    prop.PropertyType == typeof(Double) || 
-                    prop.PropertyType == typeof(Single)) 
-                    {
-                        record.Add(prop.Name, prop.GetValue(values));
-                    }
+                Value value = null;
+                switch (prop.PropertyType.FullName)
+                {
+                    case "System.DateTime":
+                        value = new Value(ValueType.DateTime, prop.GetValue(values));
+                        record.Add(prop.Name, value);
+                        break;
+                    case "System.Decimal":
+                        value = new Value(ValueType.Decimal, prop.GetValue(values));
+                        record.Add(prop.Name, value);
+                        break;
+                    case "System.Double":
+                        value = new Value(ValueType.Double, prop.GetValue(values));
+                        record.Add(prop.Name, value);
+                        break;
+                    case "System.Int16":
+                        value = new Value(ValueType.Int16, prop.GetValue(values));
+                        record.Add(prop.Name, value);
+                        break;
+                    case "System.Int32":
+                        value = new Value(ValueType.Int32, prop.GetValue(values));
+                        record.Add(prop.Name, value);
+                        break;
+                    case "System.Int64":
+                        value = new Value(ValueType.Int64, prop.GetValue(values));
+                        record.Add(prop.Name, value);
+                        break;
+                    case "System.String":
+                        value = new Value(ValueType.String, prop.GetValue(values));
+                        record.Add(prop.Name, value);
+                        break;
+                }
             }
 
             var storage = new Storage();
             var table = storage.GetTable();
-            
+
             var newId = table.Insert(record);
-            
+
             storage.SaveTable(table);
 
             return newId;
         }
+
+        //public int InsertOld<T>(T values) 
+        //{
+        //    var props = values.GetType().GetProperties();
+            
+        //    Dictionary<string,dynamic> record = new Dictionary<string,dynamic>();
+        //    foreach (var prop in props) 
+        //    {
+        //        if (prop.PropertyType == typeof(String) || 
+        //            prop.PropertyType == typeof(DateTime) || 
+        //            prop.PropertyType == typeof(Int16) ||
+        //            prop.PropertyType == typeof(Int32) || 
+        //            prop.PropertyType == typeof(Int64) || 
+        //            prop.PropertyType == typeof(Decimal) || 
+        //            prop.PropertyType == typeof(Double) || 
+        //            prop.PropertyType == typeof(Single)) 
+        //            {
+        //                record.Add(prop.Name, prop.GetValue(values));
+        //            }
+        //    }
+
+        //    var storage = new Storage();
+        //    var table = storage.GetTable();
+            
+        //    var newId = table.Insert(record);
+            
+        //    storage.SaveTable(table);
+
+        //    return newId;
+        //}
 
 
         public List<T> Select<T> () where T : new() 

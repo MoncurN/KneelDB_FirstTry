@@ -4,11 +4,11 @@ namespace KneelDB.Core
     {
         static Config() 
         {
-            BasePath = @"../Storage";
-            AutoIdName = "Id";
+            BasePath = @"../../Storage";
+            ClusteredIdName = "Id";
         }
 
         public static string BasePath { get; set; }
-        public static string AutoIdName { get; set; }
+        public static string ClusteredIdName { get; set; }
     }
 }
