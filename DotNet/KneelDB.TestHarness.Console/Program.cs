@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Dynamic;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace KneelDB.TestHarness.Console
 {
@@ -11,29 +13,74 @@ namespace KneelDB.TestHarness.Console
     {
         static void Main(string[] args)
         {
-            var test = new List<ExpandoObject>();
-            dynamic o1 = new ExpandoObject();
-            o1.Id = 1;
-            o1.Name = "First Test Object";
-            o1.Wealth = 1000000;
-
-            dynamic o2 = new ExpandoObject();
-            o2.Id = 2;
-            o2.Name = "The Second Test Object";
-            o2.Height = 6.1;
-
-            dynamic o3 = new ExpandoObject();
-            o3.Id = 3;
-            o3.Name = "Third";
-            o3.Wealth = "Wisdom";
-
-            test.Add(o1);
-            test.Add(o2);
-            test.Add(o3);
-
-            var blah = test.FirstOrDefault(t => {
-                t.
+            var od = new Dictionary<string, object>();
+            od.Add("First", 1);
+            od.Add("Second", 3.333);
+            od.Add("Third", DateTime.Now);
+            od.Add("Fourth", new
+            {
+                Id = 4,
+                Name = "Kirk"
             });
+
+            var json = JsonConvert.SerializeObject(od);
+            dynamic o = JObject.Parse(json);
+            var k = 1;
+
+            dynamic d1 = new
+            {
+                Id = 1,
+                Name = "Bill",
+                Something = 42
+            };
+
+            dynamic d2 = new
+            {
+                Id = 2,
+                Name = "Sue",
+                Something = DateTime.Now
+            };
+
+            dynamic d3 = new
+            {
+                Id = 3,
+                Name = "Bad",
+                SomethingElse = 3.33333
+            };
+
+            var dl = new List<dynamic>();
+            dl.Add(d1);
+            dl.Add(d2);
+
+            var d = dl.Where(d => d.Id == 2).ToList();
+            var b = d;
+
+            dynamic e1 = new ExpandoObject();
+            e1.Id = 1;
+            e1.Name = "Bill";
+            e1.Something = 42;
+
+            dynamic e2 = new ExpandoObject();
+            e2.Id = 2;
+            e2.Name = "Sue";
+            e2.Something = DateTime.Now;
+
+            var el = new List<ExpandoObject>();
+            el.Add(e1);
+            el.Add(e2);
+
+            
+            //var e = el.FirstOrDefault(e => e.FirstOrDefault(kv => kv.Key == "Id" && (int)kv.Value == 1).Value != null);
+            //var a = e;
+
+            //var e = el.FirstOrDefault(e => e.FirstOrDefault(kv => kv.Key == "Id" && (int)kv.Value.GetType().GetProperty("Id").GetValue(kv) == 2).Value != null);
+            
+            //foreach (var e in el)
+            //{
+            //    var a = e;
+            //    e.FirstOrDefault(kv => kv.Key == "Id" && (int)kv.Value.GetType().GetProperty("Id").GetValue(kv) == 2);
+            //    var j = 1;
+            //}
 
 
             Query query = new Query();
@@ -45,9 +92,9 @@ namespace KneelDB.TestHarness.Console
                 age = 42
              };
 
-            query.Insert(blah);
+            // query.Insert(blah);
 
-            // var result = query.Select<TheType>();
+            var result = query.Select<dynamic>();
 
             // var changed = new {
             //     Id = 3, 
