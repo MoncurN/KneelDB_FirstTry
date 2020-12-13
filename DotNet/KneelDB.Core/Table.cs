@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace KneelDB.Core
 {
+    // Needs to be a POCO, because DB needs to lock the file during read / write, and it's messy to manage that in this file
     public class Table
     {
         public Table ()
