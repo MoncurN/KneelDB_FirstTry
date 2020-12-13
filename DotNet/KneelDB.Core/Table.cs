@@ -13,6 +13,8 @@ namespace KneelDB.Core
             Name = "Default";
             ClusteredIdName = Name + "Id";
             ClusteredIdNextValue = 1;
+            Columns = new List<Column>();
+            Records = new Dictionary<int, Dictionary<string, string>>();
         }
 
         public Table (string name)
@@ -20,6 +22,8 @@ namespace KneelDB.Core
             Name = name;
             ClusteredIdName = Name + "Id";
             ClusteredIdNextValue = 1;
+            Columns = new List<Column>();
+            Records = new Dictionary<int, Dictionary<string, string>>();
         }
 
         public Table (string name, string clusteredIdName)
@@ -27,32 +31,37 @@ namespace KneelDB.Core
             Name = name;
             ClusteredIdName = clusteredIdName;
             ClusteredIdNextValue = 1;
+            Columns = new List<Column>();
+            Records = new Dictionary<int, Dictionary<string, string>>();
         }
 
-        public string Name { get; }
+        public string Name { get; set; }
         public string ClusteredIdName { get; }
-        public int ClusteredIdNextValue { get; }
+        public int ClusteredIdNextValue { get; set; }
         public List<Column> Columns { get; set; }
         public Dictionary<int, Dictionary<string,string>> Records { get; set; }
 
         public int Insert(Dictionary<string, string> record)
         {
-            // Make sure Insert doesn't have a
+            // Make sure Insert doesn't have a value for the Clustered Id
             if (record.ContainsKey(ClusteredIdName))
             {
                 throw new Exception($"You cannot set property {Config.ClusteredIdName}.  It is auto-populated.");
             }
 
+            // Check all of the properties in the record
             foreach (var kv in record)
             {
                 var column = Columns.FirstOrDefault(c => c.Name == kv.Key);
 
+                // If the Column does not exist yet, add it (with default type of "Any")
                 if (column == null)
                 {
                     column = new Column { Name = kv.Key, DataType = DataType.Any };
                     Columns.Add(column);
                 }
 
+                // Check if the value in record matches the column's data type
                 switch (column.DataType)
                 {
                     case DataType.DateTime:
@@ -110,7 +119,13 @@ namespace KneelDB.Core
                 }
             }
 
-            throw new NotImplementedException();
+            var id = ClusteredIdNextValue;
+            record.Add(ClusteredIdName, id.ToString());
+            Records.Add(id, record);
+
+            ClusteredIdNextValue++;
+
+            return id;
         }
     }
 }
