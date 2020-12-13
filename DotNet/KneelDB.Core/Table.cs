@@ -10,7 +10,7 @@ namespace KneelDB.Core
     public class Table
     {
         public string Name { get; set; }
-        public string ClusteredIdName { get; }
+        public string ClusteredIdName { get; set; }
         public int ClusteredIdNextValue { get; set; }
         public List<Column> Columns { get; set; }
         public Dictionary<int, Dictionary<string,string>> Records { get; set; }

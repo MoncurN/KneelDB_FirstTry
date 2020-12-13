@@ -41,6 +41,11 @@ namespace KneelDB.Core
             if (json == "")
             {
                 table = new Table();
+                table.Name = TableName;
+                table.ClusteredIdName = TableName + "Id";
+                table.ClusteredIdNextValue = 1;
+                table.Columns = new List<Column>();
+                table.Records = new Dictionary<int, Dictionary<string, string>>();
             }
             else
             {
@@ -63,7 +68,7 @@ namespace KneelDB.Core
         }
 
 
-        public int Insert(Dictionary<string, string> record)
+        public int Insert(Dictionary<string, string> record, InsertOptionNewColumns insertOptionNewColumns = InsertOptionNewColumns.IgnoreNewColumns)
         {
             var table = GetTable();
 
@@ -81,8 +86,15 @@ namespace KneelDB.Core
                 // If the Column does not exist yet, add it (with default type of "Any")
                 if (column == null)
                 {
-                    column = new Column { Name = kv.Key, DataType = DataType.Any };
-                    table.Columns.Add(column);
+                    if (insertOptionNewColumns == InsertOptionNewColumns.AddNewColumns) 
+                    {
+                        column = new Column { Name = kv.Key, DataType = DataType.Any };
+                        table.Columns.Add(column);
+                    }
+                    else if (insertOptionNewColumns == InsertOptionNewColumns.ErrorOnNewColumn)
+                    {
+                        throw new ArgumentException($"Column {")
+                    }
                 }
 
                 // Check if the value in record matches the column's data type
