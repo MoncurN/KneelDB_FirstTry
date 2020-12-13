@@ -9,34 +9,34 @@ namespace KneelDB.Core
         public const string DefaultTableName = "Default";
         public const string DefaultDatabaseName = "Default";
 
-        public static Table GetTable(string tableName=DefaultTableName, string databaseName=DefaultDatabaseName) {
-            Table table;
+        //public static Table GetTable(string tableName=DefaultTableName, string databaseName=DefaultDatabaseName) {
+        //    Table table;
 
-            var json = Read(tableName, databaseName);
+        //    var json = Read(tableName, databaseName);
 
-            if (json == "") {
-                table = new Table();
-            }
-            else 
-            {
-                table = JsonSerializer.Deserialize<Table>(json);
-            }
+        //    if (json == "") {
+        //        table = new Table();
+        //    }
+        //    else 
+        //    {
+        //        table = JsonSerializer.Deserialize<Table>(json);
+        //    }
 
-            return table;
-        }
+        //    return table;
+        //}
 
-        public static void SaveTable(Table table, string tableName=DefaultTableName, string databaseName=DefaultDatabaseName) 
-        {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-            var json = JsonSerializer.Serialize(table, options);
+        //public static void SaveTable(Table table, string tableName=DefaultTableName, string databaseName=DefaultDatabaseName) 
+        //{
+        //    var options = new JsonSerializerOptions
+        //    {
+        //        WriteIndented = true
+        //    };
+        //    var json = JsonSerializer.Serialize(table, options);
 
-            Write(json, tableName, databaseName);
-        }
+        //    Write(json, tableName, databaseName);
+        //}
 
-        private static string Read(string tableName, string databaseName) 
+        public static string Read(string tableName, string databaseName) 
         {
             string json = "";
             var path = Config.BasePath + "/" + databaseName ;
@@ -49,7 +49,7 @@ namespace KneelDB.Core
             return json;
         }
 
-        private static void Write(string json, string tableName, string databaseName) {
+        public static void Write(string json, string tableName, string databaseName) {
             var path = Config.BasePath + "/" + databaseName ;
             var fullPath = path + "/" + tableName + ".json";
 
