@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace KneelDB.Core.Enums
 {
-    public enum InsertOptionNewColumns
+    public enum QueryOptionNoDatabase
     {
-        AddNewColumns,
-        ErrorOnNewColumn,
-        IgnoreNewColumns
+        ThrowException, 
+        UseDefault
     }
 }

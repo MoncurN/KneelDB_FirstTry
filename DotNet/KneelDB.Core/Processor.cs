@@ -11,25 +11,59 @@ namespace KneelDB.Core
 {
     public class Processor
     {
+        // TODO: We need to refresh the table for every query.  So there is no need for this class to hold any state.  Going to make it static and stateless
         public string TableName { get; set; }
         public string DatabaseName { get; set; }
+        private Table Table { get; set; }
 
         public Processor()
         {
-            TableName = "Default";
-            DatabaseName = "Default";
+            Setup();
         }
 
         public Processor(string tableName)
         {
-            TableName = tableName;
-            DatabaseName = "Default";
+            Setup(tableName);
         }
 
         public Processor(string tableName, string databaseName)
         {
-            TableName = tableName;
-            DatabaseName = databaseName;
+            Setup(databaseName, tableName);
+        }
+
+        private void Setup(string databaseName=null, string tableName=null)
+        {
+            if (String.IsNullOrWhiteSpace(databaseName))
+            {
+                if (Config.QueryOptionNoDatabase == QueryOptionNoDatabase.ThrowException)
+                {
+                    throw new ArgumentException($"Current Config settings require you to specify a Database Name.  If you would rather just use the Default Database name, please change the Config settings.");
+                }
+                else if (Config.QueryOptionNoDatabase == QueryOptionNoDatabase.UseDefault)
+                {
+                    DatabaseName = Config.DefaultDatabaseName;
+                }
+            }
+            else
+            {
+                DatabaseName = databaseName;
+            }
+
+            if (String.IsNullOrWhiteSpace(tableName))
+            {
+                if (Config.QueryOptionNoTable == QueryOptionNoTable.ThrowException)
+                {
+                    throw new ArgumentException($"Current Config settings require you to specify a Table Name.  If you would rather just use the Default Table name, please change the Config settings.");
+                }
+                else if (Config.QueryOptionNoTable == QueryOptionNoTable.UseDefault)
+                {
+                    TableName = Config.DefaultTableName;
+                }
+            }
+            else
+            {
+                TableName = tableName;
+            }
         }
 
         private Table GetTable()
@@ -55,27 +89,14 @@ namespace KneelDB.Core
             return table;
         }
 
-            public int Insert(dynamic values, InsertOptionNewColumns insertOptionNewColumns = InsertOptionNewColumns.IgnoreNewColumns)
-        {
-            var props = values.GetType().GetProperties();
-
-            JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions();
-            jsonSerializerOptions.NumberHandling = JsonNumberHandling.WriteAsString;
-
-            var json = JsonSerializer.Serialize(values, jsonSerializerOptions);
-
-            throw new NotImplementedException();
-        }
-
-
-        public int Insert(Dictionary<string, string> record, InsertOptionNewColumns insertOptionNewColumns = InsertOptionNewColumns.IgnoreNewColumns)
+        public int Insert(Dictionary<string, string> record)
         {
             var table = GetTable();
 
             // Make sure Insert doesn't have a value for the Clustered Id
             if (record.ContainsKey(table.ClusteredIdName))
             {
-                throw new Exception($"You cannot set property {Config.ClusteredIdName}.  It is auto-populated.");
+                throw new Exception($"You cannot set property {ClusteredIdName}.  It is auto-populated.");
             }
 
             // Check all of the properties in the record
@@ -86,14 +107,14 @@ namespace KneelDB.Core
                 // If the Column does not exist yet, add it (with default type of "Any")
                 if (column == null)
                 {
-                    if (insertOptionNewColumns == InsertOptionNewColumns.AddNewColumns) 
+                    if (insertOptionNewColumns == QueryOptionNewColumns.AddNewColumns) 
                     {
                         column = new Column { Name = kv.Key, DataType = DataType.Any };
                         table.Columns.Add(column);
                     }
-                    else if (insertOptionNewColumns == InsertOptionNewColumns.ErrorOnNewColumn)
+                    else if (insertOptionNewColumns == QueryOptionNewColumns.ErrorOnNewColumn)
                     {
-                        throw new ArgumentException($"Column {")
+                        throw new ArgumentException($"Column {kv.Key} does not exist, and ");
                     }
                 }
 
@@ -170,6 +191,18 @@ namespace KneelDB.Core
             Storage.Write(json, TableName, DatabaseName);
 
             return id;
+        }
+
+        public int Insert(dynamic values)
+        {
+            var props = values.GetType().GetProperties();
+
+            JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions();
+            jsonSerializerOptions.NumberHandling = JsonNumberHandling.WriteAsString;
+
+            var json = JsonSerializer.Serialize(values, jsonSerializerOptions);
+
+            throw new NotImplementedException();
         }
     }
 }
