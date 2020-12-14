@@ -19,18 +19,22 @@ namespace KneelDB.Core
 
             if (json == "")
             {
-                table = new Table();
-                table.Name = location.TableName;
-                table.ClusteredIdName = location.TableName + "Id";
-                table.ClusteredIdNextValue = 1;
-                table.Columns = new List<Column>();
-                table.Records = new Dictionary<int, Dictionary<string, string>>();
+                table = new Table
+                {
+                    Name = location.TableName,
+                    ClusteredIdName = location.TableName + "Id",
+                    ClusteredIdNextValue = 1,
+                    Columns = new List<Column>(),
+                    Records = new Dictionary<int, Dictionary<string, string>>()
+                };
             }
             else
             {
-                JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions();
-                jsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
-                jsonSerializerOptions.WriteIndented = true;
+                JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
+                {
+                    NumberHandling = JsonNumberHandling.AllowReadingFromString,
+                    WriteIndented = true
+                };
 
                 table = JsonSerializer.Deserialize<Table>(json, jsonSerializerOptions);
             }
@@ -166,9 +170,11 @@ namespace KneelDB.Core
 
             table.ClusteredIdNextValue++;
 
-            JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions();
-            jsonSerializerOptions.NumberHandling = JsonNumberHandling.WriteAsString;
-            jsonSerializerOptions.WriteIndented = true;
+            JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
+            {
+                NumberHandling = JsonNumberHandling.WriteAsString,
+                WriteIndented = true
+            };
 
             var json = JsonSerializer.Serialize(table, jsonSerializerOptions);
 
@@ -180,14 +186,33 @@ namespace KneelDB.Core
         public static int Insert(dynamic record, string into = null)
         {
 
-            JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions();
-            jsonSerializerOptions.NumberHandling = JsonNumberHandling.WriteAsString;
+            JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions
+            {
+                NumberHandling = JsonNumberHandling.WriteAsString
+            };
 
             var json = JsonSerializer.Serialize(record, jsonSerializerOptions);
             var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
 
             var id = Insert(dictionary, into);
             return id;
+        }
+
+        public static List<Dictionary<string,string>> Select(string from = null)
+        {
+            var location = new Location(from);
+
+            var table = GetTable(location);
+
+            var records = new List<Dictionary<string, string>>();
+            foreach (var record in table.Records)
+            {
+                records.Add(record.Value);
+            }
+
+            return records;
+
+            throw new NotImplementedException();
         }
     }
 }

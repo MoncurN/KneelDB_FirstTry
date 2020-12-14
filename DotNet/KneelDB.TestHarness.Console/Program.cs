@@ -19,16 +19,18 @@ namespace KneelDB.TestHarness.Console
                 DateAdded = DateTime.Now
             };
 
-            Dictionary<string,string> thing = new Dictionary<string, string>();
-            thing.Add("Name", "Jasnah");
-            thing.Add("Order", "Elsecallers");
-            thing.Add("DateAdded", DateTime.Now.ToString());
-
-            //var processor = new Processor();
+            Dictionary<string, string> thing = new Dictionary<string, string>
+            {
+                { "Name", "Jasnah" },
+                { "Order", "Elsecallers" },
+                { "DateAdded", DateTime.Now.ToString() }
+            };
 
             Config.QueryOptionNewColumns = QueryOptionNewColumns.Add;
             var id = Processor.Insert(thing);
             var id2 = Processor.Insert(blah);
+
+            var records = Processor.Select();
         }
     }
 }

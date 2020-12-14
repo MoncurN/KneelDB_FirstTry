@@ -20,16 +20,16 @@ namespace KneelDB.Core
             if (!String.IsNullOrWhiteSpace(dotLocation))
             {
                 var locationParts = dotLocation.Split('.');
-                if (locationParts.Count() == 1)
+                if (locationParts.Length == 1)
                 {
                     TableName = locationParts[0];
                 }
-                else if (locationParts.Count() == 2)
+                else if (locationParts.Length == 2)
                 {
                     DatabaseName = locationParts[0];
                     TableName = locationParts[1];
                 }
-                else if (locationParts.Count() > 2)
+                else if (locationParts.Length > 2)
                 {
                     throw new ArgumentException($"\"Into\" can only have 0, 1 or 2 parts.  It can not have more than 2 parts at this time; Schemas and Server Name is not supported at this time in the Into statement.");
                 }
