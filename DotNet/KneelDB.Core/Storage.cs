@@ -49,9 +49,9 @@ namespace KneelDB.Core
             return json;
         }
 
-        public static void Write(string json, string tableName, string databaseName) {
-            var path = Config.BasePath + "/" + databaseName ;
-            var fullPath = path + "/" + tableName + ".json";
+        public static void Write(string json, Location location) {
+            var path = Config.BasePath + "/" + location.DatabaseName ;
+            var fullPath = path + "/" + location.TableName + ".json";
 
             if (!Directory.Exists(fullPath)) {
                 Directory.CreateDirectory(path);

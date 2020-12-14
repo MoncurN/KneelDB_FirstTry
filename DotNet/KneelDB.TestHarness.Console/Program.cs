@@ -1,4 +1,5 @@
 ﻿using KneelDB.Core;
+using KneelDB.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,21 +14,21 @@ namespace KneelDB.TestHarness.Console
         {
             var blah = new
             {
-                Id = 1,
                 Name = "Kaladin",
                 Order = "Wind Runners",
                 DateAdded = DateTime.Now
             };
 
             Dictionary<string,string> thing = new Dictionary<string, string>();
-            thing.Add("Id", "1");
-            thing.Add("Name", "Kaladin");
-            thing.Add("Order", "Wind Runners");
+            thing.Add("Name", "Jasnah");
+            thing.Add("Order", "Elsecallers");
             thing.Add("DateAdded", DateTime.Now.ToString());
 
-            var processor = new Processor();
+            //var processor = new Processor();
 
-            processor.Insert(thing);
+            Config.QueryOptionNewColumns = QueryOptionNewColumns.Add;
+            var id = Processor.Insert(thing);
+            var id2 = Processor.Insert(blah);
         }
     }
 }
