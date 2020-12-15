@@ -15,8 +15,9 @@ namespace KneelDB.TestHarness.Console
             var blah = new
             {
                 Name = "Kaladin",
-                Order = "Wind Runners",
-                DateAdded = DateTime.Now
+                Order = "Windrunners",
+                DateAdded = DateTime.Now, 
+                CanFly = true
             };
 
             Dictionary<string, string> thing = new Dictionary<string, string>

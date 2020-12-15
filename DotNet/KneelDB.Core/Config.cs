@@ -6,7 +6,7 @@ namespace KneelDB.Core
     {
         static Config()
         {
-            BasePath = @"../../Storage";
+            BasePath = @"../../../Storage";
             DefaultDatabaseName = "Default";
             DefaultTableName = "Default";
             QueryOptionNewDatabase = QueryOptionNewDatabase.Add;
