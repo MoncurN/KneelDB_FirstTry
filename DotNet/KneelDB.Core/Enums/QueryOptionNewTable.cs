@@ -8,7 +8,7 @@ namespace KneelDB.Core.Enums
 {
     public enum QueryOptionNewTable
     {
-        Add,  
+        Add,
         Ignore,
         ThrowException
     }

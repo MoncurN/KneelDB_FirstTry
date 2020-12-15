@@ -1,63 +1,48 @@
-using System;
-using System.IO;
-using System.Text.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace KneelDB.Core
 {
-    public class Storage 
+    using System;
+    using System.IO;
+    using System.Text.Json;
+
+    namespace KneelDB.Core
     {
-        public const string DefaultTableName = "Default";
-        public const string DefaultDatabaseName = "Default";
-
-        //public static Table GetTable(string tableName=DefaultTableName, string databaseName=DefaultDatabaseName) {
-        //    Table table;
-
-        //    var json = Read(tableName, databaseName);
-
-        //    if (json == "") {
-        //        table = new Table();
-        //    }
-        //    else 
-        //    {
-        //        table = JsonSerializer.Deserialize<Table>(json);
-        //    }
-
-        //    return table;
-        //}
-
-        //public static void SaveTable(Table table, string tableName=DefaultTableName, string databaseName=DefaultDatabaseName) 
-        //{
-        //    var options = new JsonSerializerOptions
-        //    {
-        //        WriteIndented = true
-        //    };
-        //    var json = JsonSerializer.Serialize(table, options);
-
-        //    Write(json, tableName, databaseName);
-        //}
-
-        public static string Read(string tableName, string databaseName) 
+        public class Storage
         {
-            string json = "";
-            var path = Config.BasePath + "/" + databaseName ;
-            var fullPath = path + "/" + tableName + ".json";
+            public const string DefaultTableName = "Default";
+            public const string DefaultDatabaseName = "Default";
 
-            if (File.Exists(fullPath)) {
-                json = File.ReadAllText(fullPath);
+            public static string Read(string tableName, string databaseName)
+            {
+                string json = "";
+                var path = Config.BasePath + "/" + databaseName;
+                var fullPath = path + "/" + tableName + ".json";
+
+                if (File.Exists(fullPath))
+                {
+                    json = File.ReadAllText(fullPath);
+                }
+
+                return json;
             }
 
-            return json;
-        }
+            public static void Write(string json, Location location)
+            {
+                var path = Config.BasePath + "/" + location.DatabaseName;
+                var fullPath = path + "/" + location.TableName + ".json";
 
-        public static void Write(string json, Location location) {
-            var path = Config.BasePath + "/" + location.DatabaseName ;
-            var fullPath = path + "/" + location.TableName + ".json";
+                if (!Directory.Exists(fullPath))
+                {
+                    Directory.CreateDirectory(path);
+                }
 
-            if (!Directory.Exists(fullPath)) {
-                Directory.CreateDirectory(path);
+                File.WriteAllText(fullPath, json);
             }
-
-            File.WriteAllText(fullPath, json);
         }
     }
 }

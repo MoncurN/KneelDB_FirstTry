@@ -8,7 +8,7 @@ namespace KneelDB.Core.Enums
 {
     public enum QueryOptionNoDatabase
     {
-        ThrowException, 
+        ThrowException,
         UseDefault
     }
 }

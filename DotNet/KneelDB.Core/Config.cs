@@ -1,4 +1,9 @@
-using KneelDB.Core.Enums;
+﻿using KneelDB.Core.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace KneelDB.Core
 {
@@ -17,7 +22,7 @@ namespace KneelDB.Core
         }
 
         public static string BasePath { get; set; }
-        public static string DefaultDatabaseName { get; set;}
+        public static string DefaultDatabaseName { get; set; }
         public static string DefaultTableName { get; set; }
         public static QueryOptionNewDatabase QueryOptionNewDatabase { get; set; }
         public static QueryOptionNoDatabase QueryOptionNoDatabase { get; set; }

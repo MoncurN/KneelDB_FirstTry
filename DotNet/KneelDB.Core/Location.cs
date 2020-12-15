@@ -51,7 +51,7 @@ namespace KneelDB.Core
                     DatabaseName = Config.DefaultDatabaseName;
                 }
             }
-            
+
             if (String.IsNullOrWhiteSpace(TableName))
             {
                 if (Config.QueryOptionNoTable == QueryOptionNoTable.ThrowException)

@@ -1,0 +1,54 @@
+{
+  "Name": "Default",
+  "ClusteredIdName": "DefaultId",
+  "ClusteredIdNextValue": "5",
+  "Columns": [
+    {
+      "Name": "Name",
+      "DataType": "Any",
+      "Required": false
+    },
+    {
+      "Name": "Order",
+      "DataType": "Any",
+      "Required": false
+    },
+    {
+      "Name": "DateAdded",
+      "DataType": "Any",
+      "Required": false
+    },
+    {
+      "Name": "CanFly",
+      "DataType": "Any",
+      "Required": false
+    }
+  ],
+  "Records": {
+    "1": {
+      "Name": "Jasnah",
+      "Order": "Elsecallers",
+      "DateAdded": "12/13/2020 9:58:28 PM",
+      "DefaultId": "1"
+    },
+    "2": {
+      "Name": "Kaladin",
+      "Order": "Wind Runners",
+      "DateAdded": "2020-12-13T21:58:28.3246435-05:00",
+      "CanFly": "1",
+      "DefaultId": "2"
+    },
+    "3": {
+      "Name": "Jasnah",
+      "Order": "Elsecallers",
+      "DateAdded": "12/14/2020 8:28:15 PM",
+      "DefaultId": "3"
+    },
+    "4": {
+      "Name": "Jasnah",
+      "Order": "Elsecallers",
+      "DateAdded": "12/14/2020 8:36:53 PM",
+      "DefaultId": "4"
+    }
+  }
+}
