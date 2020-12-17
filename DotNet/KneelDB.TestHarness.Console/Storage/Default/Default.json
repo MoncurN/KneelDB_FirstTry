@@ -1,7 +1,7 @@
 {
   "Name": "Default",
   "ClusteredIdName": "DefaultId",
-  "ClusteredIdNextValue": "5",
+  "ClusteredIdNextValue": 5,
   "Columns": [
     {
       "Name": "Name",
@@ -17,37 +17,31 @@
       "Name": "DateAdded",
       "DataType": "Any",
       "Required": false
-    },
-    {
-      "Name": "CanFly",
-      "DataType": "Any",
-      "Required": false
     }
   ],
   "Records": {
     "1": {
       "Name": "Jasnah",
       "Order": "Elsecallers",
-      "DateAdded": "12/13/2020 9:58:28 PM",
+      "DateAdded": "12/17/2020 1:04:02 AM",
       "DefaultId": "1"
     },
     "2": {
-      "Name": "Kaladin",
-      "Order": "Wind Runners",
-      "DateAdded": "2020-12-13T21:58:28.3246435-05:00",
-      "CanFly": "1",
+      "Name": "Jasnah",
+      "Order": "Elsecallers",
+      "DateAdded": "12/17/2020 1:04:12 AM",
       "DefaultId": "2"
     },
     "3": {
       "Name": "Jasnah",
       "Order": "Elsecallers",
-      "DateAdded": "12/14/2020 8:28:15 PM",
+      "DateAdded": "12/17/2020 1:04:17 AM",
       "DefaultId": "3"
     },
     "4": {
       "Name": "Jasnah",
       "Order": "Elsecallers",
-      "DateAdded": "12/14/2020 8:36:53 PM",
+      "DateAdded": "12/17/2020 1:06:39 AM",
       "DefaultId": "4"
     }
   }

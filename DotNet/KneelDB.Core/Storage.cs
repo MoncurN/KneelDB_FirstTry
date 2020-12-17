@@ -1,48 +1,39 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KneelDB.Core
 {
-    using System;
-    using System.IO;
-    using System.Text.Json;
-
-    namespace KneelDB.Core
+    public class Storage
     {
-        public class Storage
+        public static Table GetTable(Location location)
         {
-            public const string DefaultTableName = "Default";
-            public const string DefaultDatabaseName = "Default";
+            Table table;
 
-            public static string Read(string tableName, string databaseName)
+            var json = StorageDiskConnector.Read(location);
+
+            if (json == "")
             {
-                string json = "";
-                var path = Config.BasePath + "/" + databaseName;
-                var fullPath = path + "/" + tableName + ".json";
-
-                if (File.Exists(fullPath))
+                table = new Table
                 {
-                    json = File.ReadAllText(fullPath);
-                }
-
-                return json;
+                    Name = location.TableName,
+                    ClusteredIdName = location.TableName + "Id",
+                    ClusteredIdNextValue = 1,
+                    Records = new Dictionary<int, Dictionary<string, string>>()
+                };
+            }
+            else
+            {
+                table = JsonConvert.DeserializeObject<Table>(json);
             }
 
-            public static void Write(string json, Location location)
-            {
-                var path = Config.BasePath + "/" + location.DatabaseName;
-                var fullPath = path + "/" + location.TableName + ".json";
+            return table;
+        }
 
-                if (!Directory.Exists(fullPath))
-                {
-                    Directory.CreateDirectory(path);
-                }
+        public static void UpdateTable(Table table, Location location)
+        {
+            var json = JsonConvert.SerializeObject(table, Formatting.Indented);
 
-                File.WriteAllText(fullPath, json);
-            }
+            StorageDiskConnector.Write(json, location);
         }
     }
 }
