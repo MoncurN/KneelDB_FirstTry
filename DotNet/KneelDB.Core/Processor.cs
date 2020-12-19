@@ -20,7 +20,8 @@ namespace KneelDB.Core
 
         public static int Insert(dynamic record, string into = null)
         {
-            var id = InsertProcessor.Insert(dictionary, into);
+
+            var id = InsertProcessor.Insert(record, into);
             
             return id;
         }

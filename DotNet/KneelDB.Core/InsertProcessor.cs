@@ -31,7 +31,14 @@ namespace KneelDB.Core
 
         public static int Insert(dynamic values, string into = "")
         {
+            var location = new Location(into);
 
+            var table = Storage.GetTable(location);
+
+            foreach (var prop in values.GetType().GetProperties())
+            {
+
+            }
         }
 
         private static void CheckColumns(Dictionary<string, string> values, Table table)
