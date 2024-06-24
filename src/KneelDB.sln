@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KneelDB.API", "KneelDB.API\KneelDB.API.csproj", "{A93DE0C0-F0F8-4581-A899-685077049870}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KneelDB.Library", "KneelDB.Library\KneelDB.Library.csproj", "{19466B5A-C243-4C16-8E35-EF507BBFE347}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A93DE0C0-F0F8-4581-A899-685077049870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A93DE0C0-F0F8-4581-A899-685077049870}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A93DE0C0-F0F8-4581-A899-685077049870}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A93DE0C0-F0F8-4581-A899-685077049870}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19466B5A-C243-4C16-8E35-EF507BBFE347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19466B5A-C243-4C16-8E35-EF507BBFE347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19466B5A-C243-4C16-8E35-EF507BBFE347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19466B5A-C243-4C16-8E35-EF507BBFE347}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0A63D898-637E-4D66-B233-50B97932B023}
+	EndGlobalSection
+EndGlobal
